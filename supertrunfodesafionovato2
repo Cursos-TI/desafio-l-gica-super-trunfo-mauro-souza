@@ -47,8 +47,7 @@ int main() {
     float densidade_populacional_carta1, densidade_populacional_carta2; // armazena a densidade populacional da cidade ou seja população / área da cidade
     double pib_per_capita_carta1, pib_per_capita_carta2; // armazena o pib per capita da cidade ou seja PIB / população da cidade
     int pontos_turisticos_carta1, pontos_turisticos_carta2; // armazena o número de pontos turísticos da cidade
-    double super_poder_carta1, super_poder_carta2; // armazena o super poder das cartas
-    char resultado_populacao[200], resultado_area[200], resultado_pib[200], resultado_densidade_populacional[200], resultado_pib_per_capita[200], resultado_pontos_turisticos[200], resultado_super_poder[200]; // armazena o resultado das comparações
+    char resultado_densidade_populacional[200]; // armazena o resultado das comparações
     
     // Informações gerais
     printf("\n\n****** Super Trunfo de Países ******\n\n");
@@ -175,10 +174,6 @@ int main() {
     // Campos calculados
     densidade_populacional_carta2 = (float) populacao_carta2 / area_carta2; // calcula a densidade populacional da carta 2
     pib_per_capita_carta2 = pib_carta2 / (double) populacao_carta2; // calcula o pib per capita da carta 2
-
-    // Calculando o Super Poder de cada carta o atributo Densidade Populacional não será somado pois nesse caso o menor valor é que pontua
-    super_poder_carta1 = populacao_carta1 + area_carta1 + pib_carta1 + pontos_turisticos_carta1;
-    super_poder_carta2 = populacao_carta2 + area_carta2 + pib_carta2 + pontos_turisticos_carta2;
 
     // Comparando os atributos de cada carta
     // Densidade Populacional
