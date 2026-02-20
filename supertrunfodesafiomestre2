@@ -1,0 +1,394 @@
+/*
+🏅 Nível Mestre
+No nível Mestre, o desafio se intensifica com a adição de funcionalidades avançadas, como menus dinâmicos 
+e lógica de decisão complexa com operadores ternários.
+
+🆕 Diferença em relação ao Nível Aventureiro:
+Escolha de Dois Atributos: O usuário poderá escolher dois atributos para comparação entre as cartas.
+Lógica de Decisão Complexa: Implementação de estruturas de decisão aninhadas e encadeadas, além do uso de 
+operadores ternários para determinar a carta vencedora.
+Menus Dinâmicos: Os menus serão dinâmicos, permitindo uma navegação fluida entre as opções de comparação.
+
+🚩 Novas Funcionalidades:
+Comparação de Dois Atributos: O sistema comparará dois atributos simultaneamente para determinar a carta vencedora.
+Lógica Avançada: Uso de operadores ternários e lógica aninhada para lidar com comparações complexas.
+Empates: O sistema será capaz de lidar com empates, exibindo mensagens apropriadas.
+Exibição de Resultados: Exibição dos resultados das comparações de forma clara e interativa.
+
+📋 Requisitos Funcionais Comuns
+Cadastro de Cartas: O sistema deve permitir o cadastro de cartas com as informações necessárias.
+Comparação: O sistema deve comparar as cartas e determinar a vencedora com base nas regras estabelecidas.
+Escolha de Dois Atributos: O sistema deve permitir que o jogador escolha dois atributos numéricos diferentes para a comparação 
+das cartas, através de menus interativos. Implemente a lógica necessária para garantir que o jogador não possa selecionar o 
+mesmo atributo duas vezes.
+Comparação com Múltiplos Atributos: Implemente a lógica para comparar as duas cartas com base nos dois atributos escolhidos.
+Para cada atributo, a regra geral é: vence a carta com o maior valor. A exceção continua sendo a Densidade Demográfica, onde 
+vence a carta com o menor valor.
+Soma dos Atributos: Após comparar os dois atributos individualmente, o sistema deve somar os valores dos atributos para 
+cada carta. A carta com a maior soma vence a rodada.
+Tratamento de Empates: Implemente a lógica para tratar empates. Se a soma dos atributos das duas cartas for igual, 
+exiba a mensagem "Empate!".
+Menus Dinâmicos: Crie menus interativos e dinâmicos usando switch. "Dinâmicos" significa que, por exemplo, após o 
+jogador escolher o primeiro atributo, esse atributo não deve mais aparecer como opção para a escolha do segundo atributo.
+Exibição Clara do Resultado: Mostre o resultado da comparação de forma clara e organizada, incluindo:
+    O nome dos dois países.
+    Os dois atributos usados na comparação.
+    Os valores de cada atributo para cada carta.
+    A soma dos atributos para cada carta.
+    Qual carta venceu (ou se houve empate).
+
+📌 Requisitos Não Funcionais Comuns
+Usabilidade: A interface do usuário deve ser simples e intuitiva.
+Performance: O sistema deve executar operações sem atrasos perceptíveis.
+Manutenibilidade: O código deve ser bem estruturado e documentado.
+Confiabilidade: O sistema deve ser robusto e capaz de lidar com entradas inválidas de forma adequada.
+
+Requisitos não funcionais
+- Usabilidade: A interface do usuário deve ser intuitiva e fácil de navegar, com mensagens claras e instruções para cada etapa.
+- Performance: O sistema deve executar as comparações e exibir os resultados rapidamente.
+- Manutenibilidade: Escreva um código bem estruturado, organizado, com indentação consistente e comentários explicativos. 
+Use nomes de variáveis descritivos.
+- Confiabilidade: O sistema deve ser robusto e lidar com entradas inválidas do usuário de forma adequada, exibindo 
+mensagens de erro apropriadas e evitando travamentos. Utilize o default no switch para tratar opções inválidas.
+
+Simplificações para o nível avançado
+Você pode continuar usando as cartas pré-cadastradas dos desafios anteriores. Não precisa reimplementar o cadastro.
+Foque na integração de todos os elementos: menus dinâmicos com switch, comparações com if-else (e aninhamentos), 
+operador ternário, cálculo da soma dos atributos e tratamento de empates.
+A comparação é feita entre apenas duas cartas.
+*/
+#include<stdio.h>
+#include<string.h>
+
+int main() {
+    // Declaração de variáveis
+    char nome_pais_carta1[101]= {0}, nome_pais_carta2[101]= {0}; // Armazena o nome do país
+    long long int populacao_carta1, populacao_carta2; // Armazena o número de habitantes da cidade
+    float area_carta1, area_carta2; // Armazena a área da cidade em kilometros quadrados
+    double pib_carta1, pib_carta2; // Armazena o PIB (Produto Interno Bruto) da cidade
+    int pontos_turisticos_carta1, pontos_turisticos_carta2; // Armazena o número de pontos turísticos da cidade
+    float densidade_populacional_carta1, densidade_populacional_carta2; // Armazena a densidade populacional da cidade ou seja população / área da cidade
+    char resultado_populacao[200], resultado_area[200], resultado_pib[200], resultado_pontos_turisticos[200],resultado_densidade_populacional[200]; // Armazena o resultado das comparações
+    int opcao, atributo1, atributo2;// Armazena a opção de atributo escolhido pelo usuário no Menu
+    char *nome_atributo1, *nome_atributo2; // Armazena o nome do atributo escolhido
+    char *unidade1, *unidade2; // Armazena a unidade do atributo escolhido hab; km²; hab/km²; etc 
+    double soma_atributos_carta1, soma_atributos_carta2; // Armazena a soma dos atributos das cartas
+    double valor1_carta1, valor1_carta2, valor2_carta1, valor2_carta2; // Armazena os valores dos atributos das cartas
+    char texto_atributo1_carta1[100], texto_atributo1_carta2[100], texto_atributo2_carta1[100], texto_atributo2_carta2[100]; // Armazena o texto dos atributos das cartas
+    char *mensagem = "\n"; // Armazena as mensagens usadas pelo sistema
+
+    // Informações gerais
+    printf("\n\n****** Super Trunfo de Países ******\n\n");
+    // Coletando informações da primeira carta
+    printf("Digite os dados da primeira carta\n\n");
+    printf("-=== Carta1 ===-\n");
+
+    // Observação sobre o campo nome_pais_carta1
+    printf("\nDigite o nome do País com no máximo 100 caracteres.\n\n");
+    // Nome do País
+    printf("Nome do País: ");
+    fgets(nome_pais_carta1, 101, stdin);
+    nome_pais_carta1[strcspn(nome_pais_carta1, "\n")] = '\0'; // remove a quebra de linha na variavel
+    printf("\n");
+
+    // Observação sobre o campo populacao_carta1
+    printf("\nDigite o número de habitantes do País.\n\n");
+    // População
+    printf("População: ");
+    scanf("%lli", &populacao_carta1);
+    printf("\n");
+
+    // Observação sobre o campo area_carta1
+    printf("\nDigite a área do País em quilômetros quadrados.\n\n");
+    // Área
+    printf("Área: ");
+    scanf("%f", &area_carta1);
+    printf("\n");
+
+    // Observação sobre o campo pib_carta1
+    printf("\nDigite o PIB (Produto Interno Bruto) do País.\n\n");
+    // PIB
+    printf("PIB: ");
+    scanf("%lf", &pib_carta1);
+    printf("\n");
+
+    // Observações sobre o campo pontos_turisticos_carta1 
+    printf("\nDigite a quantidade de pontos turísticos no País.\n\n");
+    // Pontos turísticos
+    printf("Número de Pontos Turísticos: ");
+    scanf("%d", &pontos_turisticos_carta1);
+    printf("\n\n");
+
+    // Campos calculados
+    densidade_populacional_carta1 = (float) populacao_carta1 / area_carta1; // calcula a densidade populacional da carta 1
+ 
+    // Coletando informações da segunda carta
+    printf("Digite os dados da segunda carta\n\n");
+    printf("-=== Carta2 ===-\n");
+
+    // Observação sobre o campo nome_pais_carta2
+    printf("\nDigite o nome do País com no máximo 100 caracteres.\n\n");
+    // limpa o buffer
+    getchar();
+    // Nome do País
+    printf("Nome do País: ");
+    fgets(nome_pais_carta2, 101, stdin);
+    nome_pais_carta2[strcspn(nome_pais_carta2, "\n")] = '\0'; // remove a quebra de linha na variavel
+    printf("\n");
+
+    // Observação sobre o campo populacao_carta2
+    printf("\nDigite o número de habitantes do País.\n\n");
+    // População
+    printf("População: ");
+    scanf("%lli", &populacao_carta2);
+    printf("\n");
+
+    // Observação sobre o campo area_carta2
+    printf("\nDigite a área do País em quilômetros quadrados.\n\n");
+    // Área
+    printf("Área: ");
+    scanf("%f", &area_carta2);
+    printf("\n");
+
+    // Observação sobre o campo pib_carta2
+    printf("\nDigite o PIB (Produto Interno Bruto) do País.\n\n");
+    // PIB
+    printf("PIB: ");
+    scanf("%lf", &pib_carta2);
+    printf("\n");
+    
+    // Observações sobre o campo pontos_turisticos_carta2
+    printf("\nDigite a quantidade de pontos turísticos do País.\n\n");
+    // Pontos turísticos
+    printf("Número de Pontos Turísticos: ");
+    scanf("%d", &pontos_turisticos_carta2);
+    printf("\n\n");
+
+    // Campos calculados
+    densidade_populacional_carta2 = (float) populacao_carta2 / area_carta2; // calcula a densidade populacional da carta 2
+
+    // Menu Interativo só saí do programa se for selecionada a opção "6. Sair"
+    do {
+        printf("==================================================================\n");
+        // Exibe o cabeçalho do jogo ou mensagens de erro do sistema
+        mensagem == "\n" ? printf("       A G O R A   V A M O S   J O G A R!!!\n") : printf(mensagem); 
+        printf("==================================================================\n\n");
+
+        // Menu Interativo escolha do 1º atributo
+        printf("===- Escolha dois atributos numéricos diferentes para comparar as cartas -===\n");
+        printf("Escolha o número relativo ao 1º atributo que deseja comparar ou digite 6 para sair:\n");
+        printf("1. População\n");
+        printf("2. Área\n");
+        printf("3. PIB\n");
+        printf("4. Pontos Turísticos\n");
+        printf("5. Densidade Populacional\n");
+        printf("6. Sair\n");
+        printf("\n");
+        printf("Digite o número do 1º atributo: ");
+        scanf("%d", &opcao); // Armazena o primeiro atributo escolhido
+        printf("\n");
+
+        // Menu Interativo 2º menu
+        switch (opcao) {
+            case 1: 
+            case 2: 
+            case 3: 
+            case 4: 
+            case 5:
+                atributo1 = opcao; // atributo1 recebe a opção escolhida no primeiro menu
+                mensagem = "\n"; // zera a variavel de mensagem do sistema com uma quebra de página
+
+                do
+                {
+                    printf("==================================================================\n");
+                    // Exibe o cabeçalho do jogo ou mensagens de erro do sistema
+                    mensagem == "\n" ? printf("     E S C O L H A   O U T R O   A T R I B U T O!!!\n") : printf(mensagem); 
+                    printf("==================================================================\n\n");
+
+                    // Menu Interativo escolha do 2º atributo
+                    printf("Escolha o número relativo ao 2º atributo que deseja comparar ou digite 6 para sair:\n");
+                    // Exibe o 2º Menu sem o atributo escolhido no primeiro Menu
+                    if (atributo1 != 1) printf("1. População\n");
+                    if (atributo1 != 2) printf("2. Área\n");
+                    if (atributo1 != 3) printf("3. PIB\n");
+                    if (atributo1 != 4) printf("4. Pontos Turísticos\n");
+                    if (atributo1 != 5) printf("5. Densidade Populacional\n");
+                    printf("6. Sair\n\n");
+                    
+                    printf("Digite o número do 2º atributo: ");
+                    scanf("%d", &opcao); // Armazena o segundo atributo escolhido
+
+                    switch (opcao) {
+                        case 1: 
+                        case 2: 
+                        case 3: 
+                        case 4: 
+                        case 5:
+                            // verifica se foi digitado o mesmo valor do primeiro atributo
+                            if (opcao == atributo1) { 
+                                // Armazena a mensagem de erro do sistema para ser exibida no cabeçalho do Menu
+                                mensagem = "Erro: Você já escolheu este atributo! Escolha outro.\n\n"; 
+                            } else {
+                                atributo2 = opcao; // atributo1 recebe a opção escolhida no segundo menu
+                                mensagem = "\n";
+                            }
+                            break;
+                        case 6:
+                            // Armazena a mensagem de saida do sistema
+                            mensagem = "Você escolheu sair. Saindo...\n"; 
+                            break;
+                        default:
+                            // Armazena a mensagem de erro do sistema para ser exibida no cabeçalho do Menu
+                            mensagem = "Erro: Opção inválida! Escolha de 1 a 5 (ou 6 para sair).\n\n"; 
+                            break;
+                    }
+                // Fim da validação do 2º Menu só sai do loop se escolher as opções disponiveis
+                } while ((opcao < 1 || opcao > 6) || opcao == atributo1);
+
+                // Armazena o valor e dados dos atributos para o primeiro atributo               
+                if (opcao != 6) 
+                {
+                    switch (atributo1) {
+                        case 1: // População
+                            valor1_carta1 = populacao_carta1;
+                            valor1_carta2 = populacao_carta2;
+                            nome_atributo1 = "População";
+                            unidade1 = "hab"; 
+                            break;
+                        
+                        case 2: // Área
+                            valor1_carta1 = area_carta1;
+                            valor1_carta2 = area_carta2;
+                            nome_atributo1 = "Área";
+                            unidade1 = "km²";
+                            break;
+
+                        case 3: // PIB
+                            valor1_carta1 = pib_carta1;
+                            valor1_carta2 = pib_carta2;
+                            nome_atributo1 = "PIB";
+                            unidade1 = "de dolares";
+                            break;
+
+                        case 4: // Pontos Turísticos
+                            valor1_carta1 = pontos_turisticos_carta1;
+                            valor1_carta2 = pontos_turisticos_carta2;
+                            nome_atributo1 = "Pontos Turísticos";
+                            unidade1 = "pontos turísticos";
+                            break;
+
+                        case 5: // Densidade Populacional
+                            valor1_carta1 = densidade_populacional_carta1;
+                            valor1_carta2 = densidade_populacional_carta2;
+                            nome_atributo1 = "Densidade Populacional";
+                            unidade1 = "hab/km²";
+                            break;
+                    }
+                    // Armazena o valor e dados dos atributos para o segundo atributo
+                    switch (atributo2) {
+                        case 1: // População
+                            valor2_carta1 = populacao_carta1;
+                            valor2_carta2 = populacao_carta2;
+                            nome_atributo2 = "População";
+                            unidade2 = "hab"; 
+                            break;
+                        
+                        case 2: // Área
+                            valor2_carta1 = area_carta1;
+                            valor2_carta2 = area_carta2;
+                            nome_atributo2 = "Área";
+                            unidade2 = "km²";
+                            break;
+
+                        case 3: // PIB 
+                            valor2_carta1 = pib_carta1;
+                            valor2_carta2 = pib_carta2;
+                            nome_atributo2 = "PIB";
+                            unidade2 = "de dolares";
+                            break;
+
+                        case 4: // Pontos Turísticos
+                            valor2_carta1 = pontos_turisticos_carta1;
+                            valor2_carta2 = pontos_turisticos_carta2;
+                            nome_atributo2 = "Pontos Turísticos";
+                            unidade2 = "pontos turísticos";
+                            break;
+
+                        case 5: // Densidade Populacional 
+                            valor2_carta1 = densidade_populacional_carta1;
+                            valor2_carta2 = densidade_populacional_carta2;
+                            nome_atributo2 = "Densidade Populacional";
+                            unidade2 = "hab/km²";
+                            break;
+
+                        }
+                    
+                    // Soma atributos das cartas 1 e 2, no caso da Densidade Populacional o valor será subtraido
+                    // pois a menor Densidade Populacional ganha então vamos deixar esse valor negativo
+                    // Carta 1
+                    soma_atributos_carta1 = (atributo1 == 5 ? -valor1_carta1 : valor1_carta1) + (atributo2 == 5 ? -valor2_carta1 : valor2_carta1);
+                    // Carta 2
+                    soma_atributos_carta2 = (atributo1 == 5 ? -valor1_carta2 : valor1_carta2) + (atributo2 == 5 ? -valor2_carta2 : valor2_carta2);
+
+                    // Exibindo o resultado na tela
+                    printf("\n*** Comparação dos atributos (%s e %s) ***\n", nome_atributo1, nome_atributo2);
+                    printf("Carta 1 (%s) - %s: %.2lf %s - %s: %.2lf %s\n", nome_pais_carta1, nome_atributo1, valor1_carta1, unidade1, nome_atributo2, valor2_carta1, unidade2);
+                    printf("Carta 1 (%s) - Soma dos atributos: %.2lf\n\n", nome_pais_carta1, soma_atributos_carta1);
+
+                    printf("Carta 2 (%s) - %s: %.2lf %s - %s: %.2lf %s\n", nome_pais_carta2, nome_atributo1, valor1_carta2, unidade1, nome_atributo2, valor2_carta2, unidade2);
+                    printf("Carta 2 (%s) - Soma dos atributos: %.2lf\n\n", nome_pais_carta2, soma_atributos_carta2);
+
+                    // Comparando os atributos e validando o ganhador
+                    soma_atributos_carta1 == soma_atributos_carta2 ? printf("RESULTADO: Empate!\n\n") : 
+                    soma_atributos_carta1 > soma_atributos_carta2  ? printf("VENCEDOR: Carta 1 (%s)!\n\n", nome_pais_carta1) : 
+                                                                     printf("VENCEDOR: Carta 2 (%s)!\n\n", nome_pais_carta2);
+
+                }
+
+                // Se o usuário não pediu para sair verifica se ele quer jogar de novo
+                if (opcao != 6) {
+                    printf("Você quer jogar novamente?);\n");
+                    printf("1 para Sim ou 2 para Não: ");
+                    // Armazena a opção escolhida pelo jogador
+                    scanf("%d", &opcao); 
+                    printf("\n");
+
+                    // Se o jogador escolher sair 
+                    if (opcao == 2){
+                        opcao = 6;
+                        printf("Você escolheu sair. Saindo...\n");
+                        break;
+                    
+                    // Se escolher uma opção inválida    
+                    } else if (opcao != 1) {   
+                        mensagem = "ERRO: OPÇÃO INVÁLIDA (DIGITE 6 PARA SAIR OU JOGUE NOVAMENTE).\n";
+                    
+                    // Se escolher a opção de continuar jogando    
+                    } else {
+                        mensagem = "\n";
+                    
+                    }
+                
+                } else {
+                    printf(mensagem); // Exibe a mensagem de sistema armazenada
+
+                }
+                
+                break;
+            
+            case 6: 
+                // Se Escolher sair no primeiro Menu
+                mensagem = "Você escolheu sair. Saindo...\n";
+                printf(mensagem);
+                break;
+
+            default:
+                // Se Escolher uma opção inválida no primeiro Menu
+                mensagem = "ERRO: OPÇÃO INVÁLIDA (DIGITE UM NÚMERO DE 1 A 5 OU 6 PARA SAIR.\n";       
+        
+        }
+
+    } while (opcao != 6); // Se escolher 6 saí do jogo
+ 
+    return 0;
+    
